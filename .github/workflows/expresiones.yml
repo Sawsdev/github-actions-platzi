@@ -49,4 +49,4 @@ jobs:
       - name: Muestra lenguaje favorito
         env:
           LENGUAJE: ${{ inputs.lenguaje }}
-        run: echo "Lenguaje favorito es: $LENGUAJE"
+        run: echo "Lenguaje favorito es '$LENGUAJE'"
