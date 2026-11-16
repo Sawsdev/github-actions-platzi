@@ -1,0 +1,43 @@
+name: expresiones-github-actions
+run-name: Probando expresiones y funciones en github actions
+
+on:
+  push:
+    branches:
+      - aprendiendo-github-actions
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      lenguaje:
+        description: 'lenguaje de programacion favorito'
+        required: true
+        default: Go
+        type: choice
+        options:
+          - Go
+          - PHP
+          - JavaScript
+          - Java
+          - Rust
+          - C#
+jobs:
+
+  ejecucion_auto:
+    if: contains(fromJSON('["push","pull_request"]'), github.event_name)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v7
+        with:
+              go-version: '1.26'
+      - name: Ejecuta hola mundo
+        run: go run main.go
+  ejecucion_manual:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Muestra nombre quien ejecuta evento
+        run: echo "Evento ejecutado por '${{ github.actor }}'"
+      - name: Muestra lenguaje favorito
+        run: echo "Lenguaje favorito es: ${{ inputs.lenguaje }}"
