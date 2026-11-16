@@ -1,32 +1,15 @@
 name: triggers-curso-platzi
 run-name: Ejecutando triggers de github actions
-
+# Cuando se concatenan varios jobs en un solo workflow, es necesario que la estructura primero agrege los triggers y luego filtrar por el tipo de evento en los jobs.
 on:
+  # Push, pull_request y workflow_dispatch son los triggers
   push:
     branches:
       - 'aprendiendo-github-actions'
-    jobs:
-      hola-push:
-        runs-on: ubuntu-latest
-        steps:
-          - name: run echo
-            run: echo "corriendo action con '${{ github.event.type }}'"
   pull_request:
     branches:
       - main
-    jobs:
-      hola-pr:
-      runs-on: ubuntu-latest
-      steps:
-        - name: run pr echo
-          run: | 
-            echo "[TRIGGER PULL REQUEST] PR numero #${{ github.event.pull_request.number }}" 
-            echo "Título del PR: '${{ github.event.pull_request.title }}'"
-            echo "Rama origen: ${{ github.head_ref }} -> Rama destino: ${{ github.base_ref }}"
-
   workflow_dispatch:
-    branches:
-      - [main,aprendiendo-github-actions]
     inputs:
       aviso:
         description: 'Aviso a un usuario'
@@ -34,12 +17,32 @@ on:
         default: Sawsdev
         type: choice
         options:
+          - Sawsdev
           - Sawsa
           - Skynet
           - Chaude
     jobs:
+    # Esta es una forma de filtrar la ejecucion de los jobs, basados en el evento/trigger que lo invoca
+      hola-push:
+        if: github.event_name == 'push'
+        runs-on: ubuntu-latest
+        steps:
+          - name: run echo
+            run: echo "corriendo action con '${{ github.event_name }}'"
+      hola-pr:
+        if: github.event_name == 'pull_request'
+        runs-on: ubuntu-latest
+        steps:
+          - name: run pr echo
+            run: | 
+              echo "[TRIGGER PULL REQUEST] PR numero #${{ github.event.pull_request.number }}" 
+              echo "Título del PR: '${{ github.event.pull_request.title }}'"
+              echo "Rama origen: ${{ github.head_ref }} -> Rama destino: ${{ github.base_ref }}"
       hola-workflow-dispatch:
+        if: github.event_name == 'workflow_dispatch'
         runs-on: ubuntu-latest
         steps:
           - name: run wd echo
-            run: echo "Ejecutado manualmente por '${{ github.actor }}'"
+            run: |
+             echo "Ejecutado manualmente por '${{ github.actor }}'"
+             echo "Aviso para: ${{ inputs.aviso }}"
