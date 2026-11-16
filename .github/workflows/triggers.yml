@@ -20,7 +20,7 @@ on:
       steps:
         - name: run pr echo
           run: | 
-            echo "[TRIGGER PULL REQUEST] PR numero \#${{ github.event.pull_request.number }}" 
+            echo "[TRIGGER PULL REQUEST] PR numero #${{ github.event.pull_request.number }}" 
             echo "Título del PR: '${{ github.event.pull_request.title }}'"
             echo "Rama origen: ${{ github.head_ref }} -> Rama destino: ${{ github.base_ref }}"
 
@@ -31,10 +31,15 @@ on:
       aviso:
         description: 'Aviso a un usuario'
         required: true
-        default: '${{ github.actor }}'
+        default: Sawsdev
         type: choice
         options:
           - Sawsa
           - Skynet
           - Chaude
-
+    jobs:
+      hola-workflow-dispatch:
+        runs-on: ubuntu-latest
+        steps:
+          - name: run wd echo
+            run: echo "Ejecutado manualmente por '${{ github.actor }}"
