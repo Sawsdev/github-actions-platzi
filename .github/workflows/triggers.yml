@@ -42,4 +42,4 @@ on:
         runs-on: ubuntu-latest
         steps:
           - name: run wd echo
-            run: echo "Ejecutado manualmente por '${{ github.actor }}"
+            run: echo "Ejecutado manualmente por '${{ github.actor }}'"
