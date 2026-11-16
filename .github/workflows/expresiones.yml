@@ -28,16 +28,26 @@ jobs:
     if: contains(fromJSON('["push","pull_request"]'), github.event_name)
     runs-on: ubuntu-latest
     steps:
+      - name: Descarga codigo
       - uses: actions/checkout@v4
+
+      - name: Configura Go
       - uses: actions/setup-go@v7
         with:
               go-version: '1.26'
       - name: Ejecuta hola mundo
         run: go run main.go
   ejecucion_manual:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - name: Muestra nombre quien ejecuta evento
-        run: echo "Evento ejecutado por '${{ github.actor }}'"
+        env:
+          ACTOR: ${{ github.actor }}
+        run: echo "Evento ejecutado por '$ACTOR'"
+
       - name: Muestra lenguaje favorito
-        run: echo "Lenguaje favorito es: ${{ inputs.lenguaje }}"
+        env:
+          LENGUAJE: ${{ inputs.lenguaje }}
+          
+        run: echo "Lenguaje favorito es: $LENGUAJE"
