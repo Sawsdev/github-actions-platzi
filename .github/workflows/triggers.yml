@@ -21,7 +21,7 @@ on:
           - Sawsa
           - Skynet
           - Chaude
-    jobs:
+jobs:
     # Esta es una forma de filtrar la ejecucion de los jobs, basados en el evento/trigger que lo invoca
       hola-push:
         if: github.event_name == 'push'
