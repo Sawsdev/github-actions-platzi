@@ -1,0 +1,14 @@
+
+name: variables-platzi-github-actions
+run-name: Run platzi github actions vars
+
+on:
+  [push]
+
+jobs:
+
+  test-vars:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test vars values
+        run: echo "Hoooola ${{ vars.SALUDO_PERSONA }}"

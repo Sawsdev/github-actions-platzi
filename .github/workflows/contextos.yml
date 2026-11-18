@@ -1,0 +1,42 @@
+
+name: contexts-platzi-course
+run-name: Executing contexts on github actions
+
+on:
+  push:
+    branches:
+      - aprendiendo-github-actions
+  workflow_dispatch:
+    inputs:
+      saludo:
+        description: 'User greetings'
+        required: true
+        default: Chori
+        type: choice
+        options:
+          - Chori
+          - Otup
+          - Dough
+          - Wizi
+jobs:
+
+  manual-run:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: saludar
+        run: echo "Hola ${{inputs.saludo}}"
+  pushed-run:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: get repo data
+        uses: actions/checkout@v4
+      - name: Set up golang
+        uses: actions/setup-go@v7
+        with:
+              go-version: '1.26'
+      - name: run main
+        run: go run main.go
+
